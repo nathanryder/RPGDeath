@@ -1,0 +1,23 @@
+name: ${project.name}
+main: ${plugin.main}
+version: ${project.version}
+author: [${plugin.author}]
+depend: [Vault, WorldGuard]
+description: Desc
+commands:
+  morto:
+    description: Kill a player
+  resuscita:
+    description: Revive a player
+  trovaanima:
+    description: Give compass targeting a player
+  death:
+    description: Reloads the plugin
+
+permissions:
+  death.death:
+    description: Death effects
+    default: false
+  death.invincibility:
+    description: invincibility
+    default: false
