@@ -12,7 +12,7 @@ public class PlayerPortal implements Listener {
     public void onPlayerPortal(PlayerPortalEvent e) {
         if (e.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
             return;
-        if (!e.getPlayer().hasPermission("death.nether")) {
+        if ((!e.getPlayer().hasPermission("death.nether")) || (!e.getPlayer().hasPermission("death.bypass"))) {
             e.getPlayer().sendMessage(Messages.NO_PORTAL_PERM.get());
             e.setCancelled(true);
         }

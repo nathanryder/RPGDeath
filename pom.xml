@@ -61,6 +61,14 @@
             <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Changeskin -->
+        <dependency>
+            <groupId>me.bumblebeee_.rpgdeath</groupId>
+            <artifactId>RPGDeath</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>/home/user/Documents/buildPaths/ChangeSkin.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

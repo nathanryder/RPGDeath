@@ -1,5 +1,6 @@
 package me.bumblebeee_.rpgdeath.commands;
 
+import com.github.games647.changeskin.bukkit.ChangeSkinBukkit;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import me.bumblebeee_.rpgdeath.RPGDeath;
 import me.bumblebeee_.rpgdeath.util.Cooldowns;
 import me.bumblebeee_.rpgdeath.util.Messages;
+import me.bumblebeee_.rpgdeath.util.Storage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,6 +20,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -28,6 +31,7 @@ public class ResuscitaCommand implements CommandExecutor {
     public static @Getter Map<UUID, Location> notifications = new HashMap<>();
 
     Cooldowns cooldowns = new Cooldowns();
+    Storage storage = new Storage();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String lbl, String[] args) {
@@ -122,8 +126,29 @@ public class ResuscitaCommand implements CommandExecutor {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
                     t.teleport(notifications.get(t.getUniqueId()));
 
+                    ChangeSkinBukkit cs = (ChangeSkinBukkit) Bukkit.getServer().getPluginManager().getPlugin("ChangeSkin");
+                    cs.setSkin(t, t.getUniqueId(), true);
+
+                    List<ItemStack> items = storage.getArmorItems(t.getUniqueId());
+                    if (!(items == null) && items.size() > 0) {
+                        for (ItemStack i : items) {
+                            if (storage.getItemType(i).equalsIgnoreCase("helmet")) {
+                                t.getInventory().setHelmet(i);
+                            } else if (storage.getItemType(i).equalsIgnoreCase("chestplate")) {
+                                t.getInventory().setChestplate(i);
+                            } else if (storage.getItemType(i).equalsIgnoreCase("leggings")) {
+                                t.getInventory().setLeggings(i);
+                            } else if (storage.getItemType(i).equalsIgnoreCase("boots")) {
+                                t.getInventory().setBoots(i);
+                            } else {
+                                RPGDeath.getInstance().getLogger().warning("Failed to find type of item called " + i.getType());
+                            }
+                        }
+                    }
 
                     reviving.remove(t.getUniqueId());
+                    reviving.remove(t.getUniqueId());
+                    notifications.remove(t.getUniqueId());
                     notifications.remove(t.getUniqueId());
                 }
             }, delay*20);

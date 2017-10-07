@@ -22,6 +22,9 @@ reviveRegion: "Lotus"
 #Resurrect cooldown in minutes
 resurrectCooldown: 60
 
+#UUID of the skin to be changed to when a player dies
+deathSkinUUID: "b7413450-5727-4a51-9144-881927be0290"
+
 #Compass item
 compass:
   display: "&cTracking %player%"

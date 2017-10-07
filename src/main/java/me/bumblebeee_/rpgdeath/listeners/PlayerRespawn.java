@@ -1,7 +1,10 @@
 package me.bumblebeee_.rpgdeath.listeners;
 
+import com.github.games647.changeskin.bukkit.ChangeSkinBukkit;
+import com.github.games647.changeskin.core.ChangeSkinCore;
 import me.bumblebeee_.rpgdeath.RPGDeath;
 import me.bumblebeee_.rpgdeath.util.Messages;
+import me.bumblebeee_.rpgdeath.util.Storage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,12 +13,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class PlayerRespawn implements Listener {
 
     Random r = new Random();
+    Storage storage = new Storage();
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
@@ -23,6 +29,9 @@ public class PlayerRespawn implements Listener {
         World w = Bukkit.getServer().getWorld(rawWorld);
         Player p = e.getPlayer();
         String deathGroup = RPGDeath.getInstance().getConfig().getString("deathGroup");
+
+        if (p.hasPermission("death.bypass"))
+            return;
 
         if (w == null) {
             p.sendMessage(ChatColor.RED + "Failed to find world!");
@@ -40,6 +49,21 @@ public class PlayerRespawn implements Listener {
 
                 p.teleport(loc);
                 RPGDeath.getPermission().playerAddGroup(null, p, deathGroup);
+
+                UUID uuid = UUID.fromString(RPGDeath.getInstance().getConfig().getString("deathSkinUUID"));
+                ChangeSkinBukkit cs = (ChangeSkinBukkit) Bukkit.getServer().getPluginManager().getPlugin("ChangeSkin");
+                cs.setSkin(p, uuid, true);
+
+                if (p.hasPermission("rpginventory.keep.items") ||
+                        p.hasPermission("rpginventory.keep.armor") ||
+                        p.hasPermission("rpginventory.keep.rpginv")) {
+
+                    for (ItemStack item : p.getInventory().getArmorContents()) {
+                        storage.addArmorItem(uuid, item);
+                    }
+                }
+                p.getInventory().setArmorContents(null);
+
             }
         }, 10);
 

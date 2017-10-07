@@ -7,7 +7,6 @@ import me.bumblebeee_.rpgdeath.commands.ResuscitaCommand;
 import me.bumblebeee_.rpgdeath.commands.TrovaanimaCommand;
 import me.bumblebeee_.rpgdeath.listeners.*;
 import me.bumblebeee_.rpgdeath.util.Cooldowns;
-import me.bumblebeee_.rpgdeath.util.GhostFactory;
 import me.bumblebeee_.rpgdeath.util.Runnables;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -19,13 +18,9 @@ public class RPGDeath extends JavaPlugin {
 
     private static @Getter Plugin instance;
     public static @Getter Permission permission;
-    private static @Getter GhostFactory ghosts;
 
     Runnables runnables = new Runnables();
     Cooldowns cooldowns = new Cooldowns();
-
-    //TODO
-    //Compass
 
     @Override
     public void onEnable() {
@@ -36,8 +31,6 @@ public class RPGDeath extends JavaPlugin {
         registerEvents();
         registerCommands();
 
-        ghosts = new GhostFactory(this);
-        runnables.ghosts();
         runnables.compassUpdater();
         cooldowns.savaData();
     }
@@ -54,6 +47,8 @@ public class RPGDeath extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new FoodLevelChange(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new InventoryClick(), this);
     }
 
     public void registerCommands() {

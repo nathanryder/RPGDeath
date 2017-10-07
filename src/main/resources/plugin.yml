@@ -2,7 +2,7 @@ name: ${project.name}
 main: ${plugin.main}
 version: ${project.version}
 author: [${plugin.author}]
-depend: [Vault, WorldGuard]
+depend: [Vault, WorldGuard, ChangeSkin]
 description: Desc
 commands:
   morto:

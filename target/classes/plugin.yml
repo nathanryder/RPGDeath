@@ -2,7 +2,7 @@ name: RPGDeath
 main: me.bumblebeee_.rpgdeath.RPGDeath
 version: 1.0-SNAPSHOT
 author: [BumbleBee]
-depend: [Vault, WorldGuard]
+depend: [Vault, WorldGuard, ChangeSkin]
 description: Desc
 commands:
   morto:

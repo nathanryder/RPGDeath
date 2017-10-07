@@ -2,7 +2,6 @@ package me.bumblebeee_.rpgdeath.util;
 
 import lombok.Getter;
 import me.bumblebeee_.rpgdeath.RPGDeath;
-import me.bumblebeee_.rpgdeath.commands.TrovaanimaCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,25 +18,6 @@ public class Runnables {
 
     //world:x:y:z
     private static @Getter Map<UUID, String> coords = new HashMap<>();
-
-    public void ghosts() {
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(RPGDeath.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!p.hasPermission("death.death")) {
-                        if (RPGDeath.getGhosts().hasPlayer(p)) {
-                            RPGDeath.getGhosts().removePlayer(p);
-                            RPGDeath.getGhosts().addPlayerToGhosts(p);
-                        }
-                        continue;
-                    }
-
-                    RPGDeath.getGhosts().addPlayer(p);
-                }
-            }
-        }, 20, 20);
-    }
 
     public void compassUpdater() {
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(RPGDeath.getInstance(), new Runnable() {
@@ -101,13 +81,6 @@ public class Runnables {
                         i.setItemMeta(im);
                         Runnables.getCoords().put(p.getUniqueId(), t.getWorld().getName() + ":" + x + ":" + y + ":" + z  + ":" + t.getName());
                     }
-                }
-
-
-                //Also make sure they are in the ghost team
-                for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!RPGDeath.getGhosts().hasPlayer(p))
-                        RPGDeath.getGhosts().addPlayerToGhosts(p);
                 }
             }
         }, 40, 40);
